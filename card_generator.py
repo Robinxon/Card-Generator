@@ -126,7 +126,16 @@ class CardGenerator:
         cards_per_row, cards_per_column = self.calculate_cards_per_page()
         cards_per_page = cards_per_row * cards_per_column
         
-        margin = 5 * mm
+        # Calculate centered margins
+        card_spacing = 5 * mm  # spacing between cards
+        
+        # Calculate total space used by cards and spacing
+        total_cards_width = cards_per_row * self.config.width + (cards_per_row - 1) * card_spacing
+        total_cards_height = cards_per_column * self.config.height + (cards_per_column - 1) * card_spacing
+        
+        # Calculate margins to center the cards on the page
+        margin_x = (self.page_width - total_cards_width) / 2
+        margin_y = (self.page_height - total_cards_height) / 2
         
         # Generate alternating front and back pages
         total_pages = (len(numbers) + cards_per_page - 1) // cards_per_page
@@ -143,8 +152,8 @@ class CardGenerator:
                 row = idx // cards_per_row
                 col = idx % cards_per_row
                 
-                x = margin + col * (self.config.width + margin)
-                y = self.page_height - margin - (row + 1) * (self.config.height + margin)
+                x = margin_x + col * (self.config.width + card_spacing)
+                y = self.page_height - margin_y - (row + 1) * self.config.height - row * card_spacing
                 
                 self.draw_card_front(c, x, y, number)
             
@@ -156,8 +165,8 @@ class CardGenerator:
                 # Mirror horizontally for back side
                 col = (cards_per_row - 1) - (idx % cards_per_row)
                 
-                x = margin + col * (self.config.width + margin)
-                y = self.page_height - margin - (row + 1) * (self.config.height + margin)
+                x = margin_x + col * (self.config.width + card_spacing)
+                y = self.page_height - margin_y - (row + 1) * self.config.height - row * card_spacing
                 
                 self.draw_card_back(c, x, y, number)
             
