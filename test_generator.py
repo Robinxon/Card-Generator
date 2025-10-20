@@ -20,7 +20,7 @@ def run_test(test_name, command, expected_file):
         os.remove(expected_file)
     
     # Run command
-    result = subprocess.run(command, shell=True, capture_output=True, text=True)
+    result = subprocess.run(command.split(), capture_output=True, text=True)
     
     # Check if successful
     if result.returncode != 0:
@@ -52,21 +52,21 @@ def main():
     print("=" * 60)
     
     tests = [
-        ("Default usage (1-99)", "python card_generator.py -o test_default.pdf", "test_default.pdf"),
-        ("Small range (1-5)", "python card_generator.py -n '1-5' -o test_small.pdf", "test_small.pdf"),
-        ("Specific numbers", "python card_generator.py -n '10,20,30' -o test_specific.pdf", "test_specific.pdf"),
-        ("Complex range", "python card_generator.py -n '1-10,15,20-25' -o test_complex.pdf", "test_complex.pdf"),
-        ("Custom dimensions", "python card_generator.py -w 70 --height 100 -n '1-5' -o test_custom.pdf", "test_custom.pdf"),
+        ("Default usage (1-99)", f"{sys.executable} card_generator.py -o test_default.pdf", "test_default.pdf"),
+        ("Small range (1-5)", f"{sys.executable} card_generator.py -n 1-5 -o test_small.pdf", "test_small.pdf"),
+        ("Specific numbers", f"{sys.executable} card_generator.py -n 10,20,30 -o test_specific.pdf", "test_specific.pdf"),
+        ("Complex range", f"{sys.executable} card_generator.py -n 1-10,15,20-25 -o test_complex.pdf", "test_complex.pdf"),
+        ("Custom dimensions", f"{sys.executable} card_generator.py -w 70 --height 100 -n 1-5 -o test_custom.pdf", "test_custom.pdf"),
     ]
     
     passed = 0
-    failed = 0
+    failed_count = 0
     
     for test_name, command, expected_file in tests:
         if run_test(test_name, command, expected_file):
             passed += 1
         else:
-            failed += 1
+            failed_count += 1
     
     # Clean up test files
     print(f"\n{'='*60}")
@@ -81,11 +81,11 @@ def main():
     print("Test Summary")
     print(f"{'='*60}")
     print(f"✅ Passed: {passed}")
-    print(f"❌ Failed: {failed}")
-    print(f"Total: {passed + failed}")
+    print(f"❌ Failed: {failed_count}")
+    print(f"Total: {passed + failed_count}")
     print(f"{'='*60}")
     
-    return 0 if failed == 0 else 1
+    return 0 if failed_count == 0 else 1
 
 
 if __name__ == '__main__':
