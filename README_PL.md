@@ -4,16 +4,17 @@ Aplikacja do generowania kart numerycznych gotowych do druku.
 ## Opis
 
 Ten skrypt Python generuje pliki PDF zawierające dwustronne karty z numerami (1-99) zoptymalizowane do druku. Karty zawierają:
-- **Przód karty**: Duże, wycentrowane numery dla łatwego odczytu
-- **Tył karty**: Czarne obramowanie jako wskazówka do wycinania
+- **Przód karty**: Duże, wycentrowane, podkreślone numery z czarnym obramowaniem do cięcia
+- **Tył karty**: Duże, wycentrowane, podkreślone numery (bez obramowania)
 
 Idealne dla materiałów edukacyjnych, gier lub każdej aplikacji wymagającej ponumerowanych kart.
 
 ## Funkcje
 
 - ✅ Generowanie kart z numerami od 1 do 99
-- ✅ Dwustronna konstrukcja (numer z przodu, wskazówka cięcia z tyłu)
-- ✅ Czarne obramowanie na tylnej stronie dla precyzyjnego wycinania
+- ✅ Dwustronna konstrukcja z podkreślonymi numerami po obu stronach
+- ✅ Czarne obramowanie na przedniej stronie dla precyzyjnego wycinania
+- ✅ Naprzemienne strony przednie i tylne dla łatwego druku dwustronnego
 - ✅ Konfigurowalne wymiary kart
 - ✅ Elastyczny wybór numerów (generowanie tylko określonych numerów)
 - ✅ Automatyczna optymalizacja układu dla papieru A4
@@ -113,7 +114,7 @@ python card_generator.py -n "1-20,50,80-90" -o wybrane_karty.pdf
    - Użyj rzeczywistego rozmiaru (100% skali, bez dopasowania)
    - Użyj grubego papieru (200-300g/m²) dla lepszej jakości kart
 3. **Wycinanie**:
-   - Czarne obramowanie na tylnej stronie służy jako wskazówka do wycinania
+   - Czarne obramowanie na przedniej stronie służy jako wskazówka do wycinania
    - Użyj gilotyny papierowej lub noża do rękodzieła dla czystych krawędzi
    - Ciąć wzdłuż zewnętrznej krawędzi czarnego obramowania
 
@@ -121,7 +122,9 @@ python card_generator.py -n "1-20,50,80-90" -o wybrane_karty.pdf
 
 Skrypt automatycznie oblicza optymalny układ dla papieru A4 na podstawie wymiarów karty:
 - **Standardowe karty (63×88mm)**: 3 karty na rząd, 3 karty na kolumnę (9 kart na stronę)
-- PDF zawiera najpierw strony przednie, potem tylne
+- PDF zawiera naprzemienne strony przednie i tylne (strona 1: przód, strona 2: tył, strona 3: przód, itd.)
+- Obie strony wyświetlają numer z podkreśleniem
+- Przednia strona ma czarne obramowanie do cięcia
 - Strony tylne są odbite poziomo dla prawidłowego wyrównania podczas druku dwustronnego
 
 ## Wymagania

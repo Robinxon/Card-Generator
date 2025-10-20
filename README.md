@@ -4,16 +4,17 @@ App for generating numeric cards ready to print.
 ## Description
 
 This Python script generates PDF files containing double-sided numbered cards (1-99) optimized for printing. The cards include:
-- **Front side**: Large, centered numbers for easy reading
-- **Back side**: Black borders as cutting guides
+- **Front side**: Large, centered, underlined numbers with black border for cutting
+- **Back side**: Large, centered, underlined numbers (no border)
 
 Perfect for educational materials, games, or any application requiring numbered cards.
 
 ## Features
 
 - ✅ Generate cards with numbers from 1 to 99
-- ✅ Double-sided design (number on front, cutting guide on back)
-- ✅ Black border on back side for precise cutting
+- ✅ Double-sided design with underlined numbers on both sides
+- ✅ Black border on front side for precise cutting
+- ✅ Alternating front and back pages for easy duplex printing
 - ✅ Customizable card dimensions
 - ✅ Flexible number selection (generate only specific numbers)
 - ✅ Automatic layout optimization for A4 paper
@@ -113,7 +114,7 @@ python card_generator.py -n "1-20,50,80-90" -o selected_cards.pdf
    - Use actual size (100% scale, no fitting)
    - Use thick paper (200-300gsm) for better card quality
 3. **Cutting**:
-   - The black border on the back side serves as a cutting guide
+   - The black border on the front side serves as a cutting guide
    - Use a paper trimmer or craft knife for clean edges
    - Cut along the outer edge of the black border
 
@@ -121,7 +122,9 @@ python card_generator.py -n "1-20,50,80-90" -o selected_cards.pdf
 
 The script automatically calculates the optimal layout for A4 paper based on your card dimensions:
 - **Standard cards (63×88mm)**: 3 cards per row, 3 cards per column (9 cards per page)
-- The PDF contains front pages first, then back pages
+- The PDF contains alternating front and back pages (page 1: front, page 2: back, page 3: front, etc.)
+- Both sides display the number with underline
+- Front side has a black border for cutting guidance
 - Back pages are horizontally mirrored for proper alignment during duplex printing
 
 ## Requirements

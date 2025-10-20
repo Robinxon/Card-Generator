@@ -8,15 +8,17 @@ This implementation provides a complete solution for generating printable PDF ca
 ### ✅ Core Requirements
 1. **Python Script for PDF Generation**: Implemented in `card_generator.py` using reportlab library
 2. **Double-sided Cards**: 
-   - Front side: Large, centered number
-   - Back side: Black border for cutting guidance
+   - Front side: Large, centered, underlined number with black border for cutting guidance
+   - Back side: Large, centered, underlined number (no border)
 3. **Number Range (1-99)**: Full support for generating any number from 1 to 99
 4. **Flexible Number Selection**: Users can specify exact numbers or ranges (e.g., "1-10,15,20-25")
 5. **Customizable Dimensions**: Card width and height can be adjusted via command-line parameters
 
 ### ✅ Additional Features Implemented
 - Automatic layout optimization for A4 paper
+- Alternating front and back pages for easy duplex printing
 - Mirrored back pages for proper duplex printing alignment
+- Underlined numbers on both sides
 - Comprehensive documentation in English and Polish
 - Example configuration script
 - Test suite for quality assurance
@@ -31,9 +33,11 @@ This implementation provides a complete solution for generating printable PDF ca
 - **Border thickness**: 2mm for cutting guide
 
 ### Double-sided Printing
-The script generates two sets of pages:
-1. **Front pages**: Cards with numbers in reading order
-2. **Back pages**: Cards with borders, horizontally mirrored for duplex printing
+The script generates alternating front and back pages:
+1. **Front pages**: Cards with underlined numbers and black borders in reading order
+2. **Back pages**: Cards with underlined numbers (no border), horizontally mirrored for duplex printing
+
+Page order: Front page 1, Back page 1, Front page 2, Back page 2, etc.
 
 When printed using duplex printing with "flip on short edge", the backs align perfectly with the fronts.
 

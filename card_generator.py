@@ -3,7 +3,8 @@
 Card Generator - Generate PDF files with numbered cards for printing
 
 This script generates a PDF file containing double-sided cards with numbers.
-One side has a black border for cutting guidance, the other side has the number.
+Both sides display the number with underline. The front side has a black border
+for cutting guidance.
 """
 
 import argparse
@@ -56,7 +57,7 @@ class CardGenerator:
     
     def draw_card_front(self, c: canvas.Canvas, x: float, y: float, number: int):
         """
-        Draw the front side of a card (with number)
+        Draw the front side of a card (with number and border)
         
         Args:
             c: ReportLab canvas object
@@ -64,12 +65,12 @@ class CardGenerator:
             y: Y coordinate for card bottom-left corner
             number: Number to display on card
         """
-        # Draw card outline
-        c.setStrokeColorRGB(0.8, 0.8, 0.8)  # Light gray
-        c.setLineWidth(0.5)
+        # Draw card border (cutting guide)
+        c.setStrokeColorRGB(0, 0, 0)  # Black
+        c.setLineWidth(self.config.border_width)
         c.rect(x, y, self.config.width, self.config.height, stroke=1, fill=0)
         
-        # Draw number in the center
+        # Draw number in the center with underline
         c.setFillColorRGB(0, 0, 0)  # Black
         font_size = min(self.config.width, self.config.height) * 0.4
         c.setFont("Helvetica-Bold", font_size)
@@ -80,32 +81,38 @@ class CardGenerator:
         text_x = x + (self.config.width - text_width) / 2
         text_y = y + (self.config.height - font_size) / 2
         c.drawString(text_x, text_y, text)
+        
+        # Draw underline beneath the number
+        underline_y = text_y - 3  # 3 points below text baseline
+        c.setLineWidth(1.5)
+        c.line(text_x, underline_y, text_x + text_width, underline_y)
     
-    def draw_card_back(self, c: canvas.Canvas, x: float, y: float):
+    def draw_card_back(self, c: canvas.Canvas, x: float, y: float, number: int):
         """
-        Draw the back side of a card (with black border for cutting)
+        Draw the back side of a card (with number only, no border)
         
         Args:
             c: ReportLab canvas object
             x: X coordinate for card bottom-left corner
             y: Y coordinate for card bottom-left corner
+            number: Number to display on card
         """
-        # Draw outer rectangle (cutting guide)
-        c.setStrokeColorRGB(0, 0, 0)  # Black
-        c.setLineWidth(self.config.border_width)
-        c.rect(x, y, self.config.width, self.config.height, stroke=1, fill=0)
+        # Draw number in the center with underline (no border)
+        c.setFillColorRGB(0, 0, 0)  # Black
+        font_size = min(self.config.width, self.config.height) * 0.4
+        c.setFont("Helvetica-Bold", font_size)
         
-        # Draw inner rectangle for visual effect
-        inner_margin = self.config.border_width * 2
-        c.setLineWidth(1)
-        c.rect(
-            x + inner_margin, 
-            y + inner_margin,
-            self.config.width - 2 * inner_margin,
-            self.config.height - 2 * inner_margin,
-            stroke=1, 
-            fill=0
-        )
+        # Center the text
+        text = str(number)
+        text_width = c.stringWidth(text, "Helvetica-Bold", font_size)
+        text_x = x + (self.config.width - text_width) / 2
+        text_y = y + (self.config.height - font_size) / 2
+        c.drawString(text_x, text_y, text)
+        
+        # Draw underline beneath the number
+        underline_y = text_y - 3  # 3 points below text baseline
+        c.setLineWidth(1.5)
+        c.line(text_x, underline_y, text_x + text_width, underline_y)
     
     def generate_pdf(self, numbers: List[int], output_file: str):
         """
@@ -121,11 +128,17 @@ class CardGenerator:
         
         margin = 5 * mm
         
-        # Generate front pages (with numbers)
-        print(f"Generating front pages for {len(numbers)} cards...")
-        for page_num, i in enumerate(range(0, len(numbers), cards_per_page)):
-            page_numbers = numbers[i:i + cards_per_page]
+        # Generate alternating front and back pages
+        total_pages = (len(numbers) + cards_per_page - 1) // cards_per_page
+        print(f"Generating {total_pages} front and {total_pages} back pages for {len(numbers)} cards...")
+        
+        for page_num in range(total_pages):
+            # Calculate which numbers go on this page
+            start_idx = page_num * cards_per_page
+            end_idx = min(start_idx + cards_per_page, len(numbers))
+            page_numbers = numbers[start_idx:end_idx]
             
+            # Generate front page
             for idx, number in enumerate(page_numbers):
                 row = idx // cards_per_row
                 col = idx % cards_per_row
@@ -136,13 +149,9 @@ class CardGenerator:
                 self.draw_card_front(c, x, y, number)
             
             c.showPage()
-        
-        # Generate back pages (with borders)
-        print(f"Generating back pages for {len(numbers)} cards...")
-        for page_num, i in enumerate(range(0, len(numbers), cards_per_page)):
-            page_numbers = numbers[i:i + cards_per_page]
             
-            for idx in range(len(page_numbers)):
+            # Generate back page (mirrored horizontally)
+            for idx, number in enumerate(page_numbers):
                 row = idx // cards_per_row
                 # Mirror horizontally for back side
                 col = (cards_per_row - 1) - (idx % cards_per_row)
@@ -150,13 +159,13 @@ class CardGenerator:
                 x = margin + col * (self.config.width + margin)
                 y = self.page_height - margin - (row + 1) * (self.config.height + margin)
                 
-                self.draw_card_back(c, x, y)
+                self.draw_card_back(c, x, y, number)
             
             c.showPage()
         
         c.save()
         print(f"PDF generated successfully: {output_file}")
-        print(f"Total pages: {(len(numbers) + cards_per_page - 1) // cards_per_page * 2}")
+        print(f"Total pages: {total_pages * 2}")
         print(f"Cards per page: {cards_per_page} ({cards_per_row}x{cards_per_column})")
 
 
