@@ -26,7 +26,7 @@ class CardConfig:
         """
         self.width = width_mm * mm
         self.height = height_mm * mm
-        self.border_width = 2 * mm  # Border thickness for cutting guide
+        self.border_width = 0.1 * mm  # Border thickness for cutting guide
 
 
 class CardGenerator:
