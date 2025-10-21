@@ -19,7 +19,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 
 class CardConfig:
     """Configuration for card generation"""
-    def __init__(self, width_mm: float = 63, height_mm: float = 88, font: str = 'Helvetica-Bold'):
+    def __init__(self, width_mm: float = 63, height_mm: float = 88, font: str = 'Helvetica-Bold', font_size: float = None):
         """
         Initialize card configuration
         
@@ -27,12 +27,14 @@ class CardConfig:
             width_mm: Card width in millimeters (default: 63mm, standard poker card)
             height_mm: Card height in millimeters (default: 88mm, standard poker card)
             font: Font name or path to .ttf file (default: Helvetica-Bold)
+            font_size: Font size in points (default: None, auto-calculated)
         """
         self.width = width_mm * mm
         self.height = height_mm * mm
         self.border_width = 0.1 * mm  # Border thickness for cutting guide
         self.font = font
         self.font_name = None  # Will be set when registering custom fonts
+        self.font_size = font_size  # Custom font size in points (None = auto-calculate)
 
 
 class CardGenerator:
@@ -107,7 +109,11 @@ class CardGenerator:
         
         # Draw number in the center with underline
         c.setFillColorRGB(0, 0, 0)  # Black
-        font_size = min(self.config.width, self.config.height) * 0.4
+        # Use custom font size if provided, otherwise auto-calculate
+        if self.config.font_size is not None:
+            font_size = self.config.font_size
+        else:
+            font_size = min(self.config.width, self.config.height) * 0.4
         c.setFont(self.config.font_name, font_size)
         
         # Center the text
@@ -134,7 +140,11 @@ class CardGenerator:
         """
         # Draw number in the center with underline (no border)
         c.setFillColorRGB(0, 0, 0)  # Black
-        font_size = min(self.config.width, self.config.height) * 0.4
+        # Use custom font size if provided, otherwise auto-calculate
+        if self.config.font_size is not None:
+            font_size = self.config.font_size
+        else:
+            font_size = min(self.config.width, self.config.height) * 0.4
         c.setFont(self.config.font_name, font_size)
         
         # Center the text
@@ -242,41 +252,44 @@ def main():
         epilog="""
 Examples:
   # Generate cards 1-99
-  python card_generator.py -o cards.pdf
+  python card_generator.py -O cards.pdf
   
   # Generate specific numbers
-  python card_generator.py -n "1-10,15,20-25" -o cards.pdf
+  python card_generator.py -N "1-10,15,20-25" -O cards.pdf
   
   # Generate with custom dimensions (70mm x 100mm)
-  python card_generator.py -w 70 -H 100 -o cards.pdf
+  python card_generator.py -W 70 -H 100 -O cards.pdf
   
   # Generate only cards 50-60
-  python card_generator.py -n "50-60" -o cards_50-60.pdf
+  python card_generator.py -N "50-60" -O cards_50-60.pdf
   
   # Use custom font from system
-  python card_generator.py -f "Times-Bold" -o cards.pdf
+  python card_generator.py -F "Times-Bold" -O cards.pdf
   
-  # Use custom font from file
-  python card_generator.py -f "/path/to/font.ttf" -o cards.pdf
+  # Use custom font from file with custom size
+  python card_generator.py -F "/path/to/font.ttf" -S 48 -O cards.pdf
+  
+  # Combine all options
+  python card_generator.py -N "1-20" -W 80 -H 120 -F "Courier-Bold" -S 60 -O cards.pdf
         """
     )
     
     parser.add_argument(
-        '-n', '--numbers',
+        '-N', '--numbers',
         type=str,
         default='1-99',
         help='Numbers to generate (e.g., "1-99", "1-10,15,20-25"). Default: 1-99'
     )
     
     parser.add_argument(
-        '-o', '--output',
+        '-O', '--output',
         type=str,
         default='cards.pdf',
         help='Output PDF file name. Default: cards.pdf'
     )
     
     parser.add_argument(
-        '-w', '--width',
+        '-W', '--width',
         type=float,
         default=63,
         help='Card width in millimeters. Default: 63mm (poker card size)'
@@ -290,10 +303,17 @@ Examples:
     )
     
     parser.add_argument(
-        '-f', '--font',
+        '-F', '--font',
         type=str,
         default='Helvetica-Bold',
         help='Font name or path to font file (.ttf). Default: Helvetica-Bold'
+    )
+    
+    parser.add_argument(
+        '-S', '--font-size',
+        type=float,
+        default=None,
+        help='Font size in points. If not specified, auto-calculated based on card size'
     )
     
     args = parser.parse_args()
@@ -310,10 +330,12 @@ Examples:
         return 1
     
     # Create configuration
-    config = CardConfig(width_mm=args.width, height_mm=args.height, font=args.font)
+    config = CardConfig(width_mm=args.width, height_mm=args.height, font=args.font, font_size=args.font_size)
     print(f"Card dimensions: {args.width}mm x {args.height}mm")
     if args.font != 'Helvetica-Bold':
         print(f"Using font: {args.font}")
+    if args.font_size is not None:
+        print(f"Using font size: {args.font_size} points")
     
     # Generate PDF
     generator = CardGenerator(config)

@@ -52,11 +52,12 @@ def main():
     print("=" * 60)
     
     tests = [
-        ("Default usage (1-99)", f"{sys.executable} card_generator.py -o test_default.pdf", "test_default.pdf"),
-        ("Small range (1-5)", f"{sys.executable} card_generator.py -n 1-5 -o test_small.pdf", "test_small.pdf"),
-        ("Specific numbers", f"{sys.executable} card_generator.py -n 10,20,30 -o test_specific.pdf", "test_specific.pdf"),
-        ("Complex range", f"{sys.executable} card_generator.py -n 1-10,15,20-25 -o test_complex.pdf", "test_complex.pdf"),
-        ("Custom dimensions", f"{sys.executable} card_generator.py -w 70 --height 100 -n 1-5 -o test_custom.pdf", "test_custom.pdf"),
+        ("Default usage (1-99)", f"{sys.executable} card_generator.py -O test_default.pdf", "test_default.pdf"),
+        ("Small range (1-5)", f"{sys.executable} card_generator.py -N 1-5 -O test_small.pdf", "test_small.pdf"),
+        ("Specific numbers", f"{sys.executable} card_generator.py -N 10,20,30 -O test_specific.pdf", "test_specific.pdf"),
+        ("Complex range", f"{sys.executable} card_generator.py -N 1-10,15,20-25 -O test_complex.pdf", "test_complex.pdf"),
+        ("Custom dimensions", f"{sys.executable} card_generator.py -W 70 -H 100 -N 1-5 -O test_custom.pdf", "test_custom.pdf"),
+        ("Custom font size", f"{sys.executable} card_generator.py -N 1-3 -S 48 -O test_fontsize.pdf", "test_fontsize.pdf"),
     ]
     
     passed = 0

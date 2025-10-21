@@ -46,19 +46,19 @@ python card_generator.py -o karty.pdf
 
 Wygeneruj karty dla numerów 1-10:
 ```bash
-python card_generator.py -n "1-10" -o karty_1-10.pdf
+python card_generator.py -N "1-10" -O karty_1-10.pdf
 ```
 
 Wygeneruj określone numery (np. 1-10, 15 i 20-25):
 ```bash
-python card_generator.py -n "1-10,15,20-25" -o karty_wybrane.pdf
+python card_generator.py -N "1-10,15,20-25" -O karty_wybrane.pdf
 ```
 
 ### Niestandardowe wymiary kart
 
 Wygeneruj karty o niestandardowych wymiarach (np. 70mm × 100mm):
 ```bash
-python card_generator.py -w 70 -H 100 -o duze_karty.pdf
+python card_generator.py -W 70 -H 100 -O duze_karty.pdf
 ```
 
 ### Niestandardowa czcionka
@@ -66,67 +66,90 @@ python card_generator.py -w 70 -H 100 -o duze_karty.pdf
 Użyj innej czcionki (wbudowanej lub niestandardowej):
 ```bash
 # Użyj wbudowanej czcionki
-python card_generator.py -f "Times-Bold" -o karty.pdf
+python card_generator.py -F "Times-Bold" -O karty.pdf
 
 # Użyj pliku z czcionką
-python card_generator.py -f "/sciezka/do/czcionki.ttf" -o karty.pdf
+python card_generator.py -F "/sciezka/do/czcionki.ttf" -O karty.pdf
+```
+
+### Niestandardowy rozmiar czcionki
+
+Kontroluj rozmiar numerów na kartach:
+```bash
+# Użyj niestandardowego rozmiaru czcionki (w punktach)
+python card_generator.py -S 60 -O karty.pdf
+
+# Połącz z innymi opcjami
+python card_generator.py -W 80 -H 120 -F "Courier-Bold" -S 72 -O duze_karty.pdf
 ```
 
 ### Wszystkie opcje
 
 ```
-użycie: card_generator.py [-h] [-n NUMERY] [-o PLIK_WYJŚCIOWY] [-w SZEROKOŚĆ] [-H WYSOKOŚĆ] [-f CZCIONKA]
+użycie: card_generator.py [-h] [-N NUMERY] [-O PLIK_WYJŚCIOWY] [-W SZEROKOŚĆ] [-H WYSOKOŚĆ] [-F CZCIONKA] [-S ROZMIAR_CZCIONKI]
 
 Generuj plik PDF z ponumerowanymi kartami do druku
 
 opcje:
   -h, --help            pokaż tę wiadomość pomocy i wyjdź
-  -n NUMERY, --numbers NUMERY
+  -N NUMERY, --numbers NUMERY
                         Numery do wygenerowania (np. "1-99", "1-10,15,20-25"). 
                         Domyślnie: 1-99
-  -o PLIK_WYJŚCIOWY, --output PLIK_WYJŚCIOWY
+  -O PLIK_WYJŚCIOWY, --output PLIK_WYJŚCIOWY
                         Nazwa pliku PDF wyjściowego. Domyślnie: cards.pdf
-  -w SZEROKOŚĆ, --width SZEROKOŚĆ
+  -W SZEROKOŚĆ, --width SZEROKOŚĆ
                         Szerokość karty w milimetrach. Domyślnie: 63mm (rozmiar karty pokerowej)
   -H WYSOKOŚĆ, --height WYSOKOŚĆ
                         Wysokość karty w milimetrach. Domyślnie: 88mm (rozmiar karty pokerowej)
-  -f CZCIONKA, --font CZCIONKA
+  -F CZCIONKA, --font CZCIONKA
                         Nazwa czcionki lub ścieżka do pliku .ttf. Domyślnie: Helvetica-Bold
+  -S ROZMIAR_CZCIONKI, --font-size ROZMIAR_CZCIONKI
+                        Rozmiar czcionki w punktach. Jeśli nie podano, obliczany automatycznie
 ```
 
 ## Przykłady
 
 ### Przykład 1: Standardowe karty rozmiaru pokerowego (wszystkie numery)
 ```bash
-python card_generator.py -o karty_1-99.pdf
+python card_generator.py -O karty_1-99.pdf
 ```
 
 ### Przykład 2: Dodrukowanie tylko brakujących kart
 Jeśli musisz dodrukować karty 45-50:
 ```bash
-python card_generator.py -n "45-50" -o dodruk_45-50.pdf
+python card_generator.py -N "45-50" -O dodruk_45-50.pdf
 ```
 
 ### Przykład 3: Karty o niestandardowym rozmiarze
 Utwórz większe karty (80mm × 120mm):
 ```bash
-python card_generator.py -w 80 -H 120 -o duze_karty.pdf
+python card_generator.py -W 80 -H 120 -O duze_karty.pdf
 ```
 
 ### Przykład 4: Wiele zakresów
 Wygeneruj karty: 1-20, 50 i 80-90:
 ```bash
-python card_generator.py -n "1-20,50,80-90" -o wybrane_karty.pdf
+python card_generator.py -N "1-20,50,80-90" -O wybrane_karty.pdf
 ```
 
 ### Przykład 5: Niestandardowa czcionka
 Użyj innej czcionki dla numerów:
 ```bash
 # Wbudowana czcionka
-python card_generator.py -f "Times-Roman" -o karty_times.pdf
+python card_generator.py -F "Times-Roman" -O karty_times.pdf
 
 # Plik z czcionką
-python card_generator.py -f "/sciezka/do/czcionki.ttf" -o karty_niestandardowe.pdf
+python card_generator.py -F "/sciezka/do/czcionki.ttf" -O karty_niestandardowe.pdf
+```
+
+### Przykład 6: Niestandardowy rozmiar czcionki
+Kontroluj rozmiar numerów:
+```bash
+# Większe numery
+python card_generator.py -S 72 -O karty_duze_numery.pdf
+
+# Połącz z niestandardowymi wymiarami
+python card_generator.py -W 100 -H 150 -F "Courier-Bold" -S 96 -O karty_jumbo.pdf
 ```
 
 ## Instrukcje drukowania

@@ -46,19 +46,19 @@ python card_generator.py -o cards.pdf
 
 Generate cards for numbers 1-10:
 ```bash
-python card_generator.py -n "1-10" -o cards_1-10.pdf
+python card_generator.py -N "1-10" -O cards_1-10.pdf
 ```
 
 Generate specific numbers (e.g., 1-10, 15, and 20-25):
 ```bash
-python card_generator.py -n "1-10,15,20-25" -o custom_cards.pdf
+python card_generator.py -N "1-10,15,20-25" -O custom_cards.pdf
 ```
 
 ### Custom Card Dimensions
 
 Generate cards with custom dimensions (e.g., 70mm × 100mm):
 ```bash
-python card_generator.py -w 70 -H 100 -o large_cards.pdf
+python card_generator.py -W 70 -H 100 -O large_cards.pdf
 ```
 
 ### Custom Font
@@ -66,66 +66,89 @@ python card_generator.py -w 70 -H 100 -o large_cards.pdf
 Use a different font (built-in or custom):
 ```bash
 # Use a built-in font
-python card_generator.py -f "Times-Bold" -o cards.pdf
+python card_generator.py -F "Times-Bold" -O cards.pdf
 
 # Use a custom font file
-python card_generator.py -f "/path/to/myfont.ttf" -o cards.pdf
+python card_generator.py -F "/path/to/myfont.ttf" -O cards.pdf
+```
+
+### Custom Font Size
+
+Control the size of numbers on cards:
+```bash
+# Use custom font size (in points)
+python card_generator.py -S 60 -O cards.pdf
+
+# Combine with other options
+python card_generator.py -W 80 -H 120 -F "Courier-Bold" -S 72 -O large_cards.pdf
 ```
 
 ### All Options
 
 ```
-usage: card_generator.py [-h] [-n NUMBERS] [-o OUTPUT] [-w WIDTH] [-H HEIGHT] [-f FONT]
+usage: card_generator.py [-h] [-N NUMBERS] [-O OUTPUT] [-W WIDTH] [-H HEIGHT] [-F FONT] [-S FONT_SIZE]
 
 Generate PDF file with numbered cards for printing
 
 optional arguments:
   -h, --help            show this help message and exit
-  -n NUMBERS, --numbers NUMBERS
+  -N NUMBERS, --numbers NUMBERS
                         Numbers to generate (e.g., "1-99", "1-10,15,20-25"). 
                         Default: 1-99
-  -o OUTPUT, --output OUTPUT
+  -O OUTPUT, --output OUTPUT
                         Output PDF file name. Default: cards.pdf
-  -w WIDTH, --width WIDTH
+  -W WIDTH, --width WIDTH
                         Card width in millimeters. Default: 63mm (poker card size)
   -H HEIGHT, --height HEIGHT
                         Card height in millimeters. Default: 88mm (poker card size)
-  -f FONT, --font FONT  Font name or path to font file (.ttf). Default: Helvetica-Bold
+  -F FONT, --font FONT  Font name or path to font file (.ttf). Default: Helvetica-Bold
+  -S FONT_SIZE, --font-size FONT_SIZE
+                        Font size in points. If not specified, auto-calculated based on card size
 ```
 
 ## Examples
 
 ### Example 1: Standard poker-sized cards (all numbers)
 ```bash
-python card_generator.py -o cards_1-99.pdf
+python card_generator.py -O cards_1-99.pdf
 ```
 
 ### Example 2: Print only missing cards
 If you need to reprint cards 45-50:
 ```bash
-python card_generator.py -n "45-50" -o reprint_45-50.pdf
+python card_generator.py -N "45-50" -O reprint_45-50.pdf
 ```
 
 ### Example 3: Custom size cards
 Create larger cards (80mm × 120mm):
 ```bash
-python card_generator.py -w 80 -H 120 -o large_cards.pdf
+python card_generator.py -W 80 -H 120 -O large_cards.pdf
 ```
 
 ### Example 4: Multiple ranges
 Generate cards: 1-20, 50, and 80-90:
 ```bash
-python card_generator.py -n "1-20,50,80-90" -o selected_cards.pdf
+python card_generator.py -N "1-20,50,80-90" -O selected_cards.pdf
 ```
 
 ### Example 5: Custom font
 Use a different font for the numbers:
 ```bash
 # Built-in font
-python card_generator.py -f "Times-Roman" -o cards_times.pdf
+python card_generator.py -F "Times-Roman" -O cards_times.pdf
 
 # Custom font file
-python card_generator.py -f "/path/to/custom_font.ttf" -o cards_custom.pdf
+python card_generator.py -F "/path/to/custom_font.ttf" -O cards_custom.pdf
+```
+
+### Example 6: Custom font size
+Control the size of numbers:
+```bash
+# Larger numbers
+python card_generator.py -S 72 -O cards_large_numbers.pdf
+
+# Combine with custom dimensions
+python card_generator.py -W 100 -H 150 -F "Courier-Bold" -S 96 -O jumbo_cards.pdf
 ```
 
 ## Printing Instructions
