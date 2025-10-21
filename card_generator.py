@@ -8,25 +8,31 @@ for cutting guidance.
 """
 
 import argparse
+import os
 from typing import List, Tuple
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 
 
 class CardConfig:
     """Configuration for card generation"""
-    def __init__(self, width_mm: float = 63, height_mm: float = 88):
+    def __init__(self, width_mm: float = 63, height_mm: float = 88, font: str = 'Helvetica-Bold'):
         """
         Initialize card configuration
         
         Args:
             width_mm: Card width in millimeters (default: 63mm, standard poker card)
             height_mm: Card height in millimeters (default: 88mm, standard poker card)
+            font: Font name or path to .ttf file (default: Helvetica-Bold)
         """
         self.width = width_mm * mm
         self.height = height_mm * mm
         self.border_width = 0.1 * mm  # Border thickness for cutting guide
+        self.font = font
+        self.font_name = None  # Will be set when registering custom fonts
 
 
 class CardGenerator:
@@ -41,6 +47,35 @@ class CardGenerator:
         """
         self.config = config
         self.page_width, self.page_height = A4
+        self._register_font()
+    
+    def _register_font(self):
+        """Register custom font if provided as a file path"""
+        font = self.config.font
+        
+        # Check if font is a file path
+        if font.endswith('.ttf') or font.endswith('.TTF'):
+            if os.path.exists(font):
+                # Extract font name from file path
+                font_basename = os.path.basename(font)
+                font_name = os.path.splitext(font_basename)[0]
+                
+                try:
+                    # Register the custom font
+                    pdfmetrics.registerFont(TTFont(font_name, font))
+                    self.config.font_name = font_name
+                    print(f"Registered custom font: {font_name} from {font}")
+                except Exception as e:
+                    print(f"Warning: Could not load font file {font}: {e}")
+                    print("Falling back to Helvetica-Bold")
+                    self.config.font_name = 'Helvetica-Bold'
+            else:
+                print(f"Warning: Font file not found: {font}")
+                print("Falling back to Helvetica-Bold")
+                self.config.font_name = 'Helvetica-Bold'
+        else:
+            # Assume it's a built-in font name
+            self.config.font_name = font
         
     def calculate_cards_per_page(self) -> Tuple[int, int]:
         """
@@ -73,11 +108,11 @@ class CardGenerator:
         # Draw number in the center with underline
         c.setFillColorRGB(0, 0, 0)  # Black
         font_size = min(self.config.width, self.config.height) * 0.4
-        c.setFont("Helvetica-Bold", font_size)
+        c.setFont(self.config.font_name, font_size)
         
         # Center the text
         text = str(number)
-        text_width = c.stringWidth(text, "Helvetica-Bold", font_size)
+        text_width = c.stringWidth(text, self.config.font_name, font_size)
         text_x = x + (self.config.width - text_width) / 2
         text_y = y + (self.config.height - font_size) / 2
         c.drawString(text_x, text_y, text)
@@ -100,11 +135,11 @@ class CardGenerator:
         # Draw number in the center with underline (no border)
         c.setFillColorRGB(0, 0, 0)  # Black
         font_size = min(self.config.width, self.config.height) * 0.4
-        c.setFont("Helvetica-Bold", font_size)
+        c.setFont(self.config.font_name, font_size)
         
         # Center the text
         text = str(number)
-        text_width = c.stringWidth(text, "Helvetica-Bold", font_size)
+        text_width = c.stringWidth(text, self.config.font_name, font_size)
         text_x = x + (self.config.width - text_width) / 2
         text_y = y + (self.config.height - font_size) / 2
         c.drawString(text_x, text_y, text)
@@ -213,10 +248,16 @@ Examples:
   python card_generator.py -n "1-10,15,20-25" -o cards.pdf
   
   # Generate with custom dimensions (70mm x 100mm)
-  python card_generator.py -w 70 --height 100 -o cards.pdf
+  python card_generator.py -w 70 -H 100 -o cards.pdf
   
   # Generate only cards 50-60
   python card_generator.py -n "50-60" -o cards_50-60.pdf
+  
+  # Use custom font from system
+  python card_generator.py -f "Times-Bold" -o cards.pdf
+  
+  # Use custom font from file
+  python card_generator.py -f "/path/to/font.ttf" -o cards.pdf
         """
     )
     
@@ -242,10 +283,17 @@ Examples:
     )
     
     parser.add_argument(
-        '--height',
+        '-H', '--height',
         type=float,
         default=88,
         help='Card height in millimeters. Default: 88mm (poker card size)'
+    )
+    
+    parser.add_argument(
+        '-f', '--font',
+        type=str,
+        default='Helvetica-Bold',
+        help='Font name or path to font file (.ttf). Default: Helvetica-Bold'
     )
     
     args = parser.parse_args()
@@ -262,8 +310,10 @@ Examples:
         return 1
     
     # Create configuration
-    config = CardConfig(width_mm=args.width, height_mm=args.height)
+    config = CardConfig(width_mm=args.width, height_mm=args.height, font=args.font)
     print(f"Card dimensions: {args.width}mm x {args.height}mm")
+    if args.font != 'Helvetica-Bold':
+        print(f"Using font: {args.font}")
     
     # Generate PDF
     generator = CardGenerator(config)

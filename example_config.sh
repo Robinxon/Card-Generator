@@ -15,10 +15,18 @@ python card_generator.py -n "25,26,27,28,29,30" -o reprint_25-30.pdf
 python card_generator.py -n "1-10,20-30,50-60" -o cards_selected.pdf
 
 # Generate cards with custom dimensions (bridge card size: 57mm x 89mm)
-python card_generator.py -w 57 --height 89 -o cards_bridge_size.pdf
+python card_generator.py -w 57 -H 89 -o cards_bridge_size.pdf
 
 # Generate large cards (for visibility)
-python card_generator.py -w 80 --height 120 -n "1-20" -o cards_large.pdf
+python card_generator.py -w 80 -H 120 -n "1-20" -o cards_large.pdf
 
 # Generate mini cards
-python card_generator.py -w 45 --height 65 -n "1-99" -o cards_mini.pdf
+python card_generator.py -w 45 -H 65 -n "1-99" -o cards_mini.pdf
+
+# Use custom fonts
+python card_generator.py -f "Times-Bold" -o cards_times.pdf
+python card_generator.py -f "Courier-Bold" -o cards_courier.pdf
+
+# Use custom font from file (replace with actual path)
+# python card_generator.py -f "/path/to/custom_font.ttf" -o cards_custom_font.pdf
+

@@ -58,13 +58,24 @@ python card_generator.py -n "1-10,15,20-25" -o custom_cards.pdf
 
 Generate cards with custom dimensions (e.g., 70mm × 100mm):
 ```bash
-python card_generator.py -w 70 --height 100 -o large_cards.pdf
+python card_generator.py -w 70 -H 100 -o large_cards.pdf
+```
+
+### Custom Font
+
+Use a different font (built-in or custom):
+```bash
+# Use a built-in font
+python card_generator.py -f "Times-Bold" -o cards.pdf
+
+# Use a custom font file
+python card_generator.py -f "/path/to/myfont.ttf" -o cards.pdf
 ```
 
 ### All Options
 
 ```
-usage: card_generator.py [-h] [-n NUMBERS] [-o OUTPUT] [-w WIDTH] [-h HEIGHT]
+usage: card_generator.py [-h] [-n NUMBERS] [-o OUTPUT] [-w WIDTH] [-H HEIGHT] [-f FONT]
 
 Generate PDF file with numbered cards for printing
 
@@ -77,7 +88,9 @@ optional arguments:
                         Output PDF file name. Default: cards.pdf
   -w WIDTH, --width WIDTH
                         Card width in millimeters. Default: 63mm (poker card size)
-  --height HEIGHT       Card height in millimeters. Default: 88mm (poker card size)
+  -H HEIGHT, --height HEIGHT
+                        Card height in millimeters. Default: 88mm (poker card size)
+  -f FONT, --font FONT  Font name or path to font file (.ttf). Default: Helvetica-Bold
 ```
 
 ## Examples
@@ -96,13 +109,23 @@ python card_generator.py -n "45-50" -o reprint_45-50.pdf
 ### Example 3: Custom size cards
 Create larger cards (80mm × 120mm):
 ```bash
-python card_generator.py -w 80 --height 120 -o large_cards.pdf
+python card_generator.py -w 80 -H 120 -o large_cards.pdf
 ```
 
 ### Example 4: Multiple ranges
 Generate cards: 1-20, 50, and 80-90:
 ```bash
 python card_generator.py -n "1-20,50,80-90" -o selected_cards.pdf
+```
+
+### Example 5: Custom font
+Use a different font for the numbers:
+```bash
+# Built-in font
+python card_generator.py -f "Times-Roman" -o cards_times.pdf
+
+# Custom font file
+python card_generator.py -f "/path/to/custom_font.ttf" -o cards_custom.pdf
 ```
 
 ## Printing Instructions

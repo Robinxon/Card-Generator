@@ -58,13 +58,24 @@ python card_generator.py -n "1-10,15,20-25" -o karty_wybrane.pdf
 
 Wygeneruj karty o niestandardowych wymiarach (np. 70mm × 100mm):
 ```bash
-python card_generator.py -w 70 --height 100 -o duze_karty.pdf
+python card_generator.py -w 70 -H 100 -o duze_karty.pdf
+```
+
+### Niestandardowa czcionka
+
+Użyj innej czcionki (wbudowanej lub niestandardowej):
+```bash
+# Użyj wbudowanej czcionki
+python card_generator.py -f "Times-Bold" -o karty.pdf
+
+# Użyj pliku z czcionką
+python card_generator.py -f "/sciezka/do/czcionki.ttf" -o karty.pdf
 ```
 
 ### Wszystkie opcje
 
 ```
-użycie: card_generator.py [-h] [-n NUMERY] [-o PLIK_WYJŚCIOWY] [-w SZEROKOŚĆ] [--height WYSOKOŚĆ]
+użycie: card_generator.py [-h] [-n NUMERY] [-o PLIK_WYJŚCIOWY] [-w SZEROKOŚĆ] [-H WYSOKOŚĆ] [-f CZCIONKA]
 
 Generuj plik PDF z ponumerowanymi kartami do druku
 
@@ -77,7 +88,10 @@ opcje:
                         Nazwa pliku PDF wyjściowego. Domyślnie: cards.pdf
   -w SZEROKOŚĆ, --width SZEROKOŚĆ
                         Szerokość karty w milimetrach. Domyślnie: 63mm (rozmiar karty pokerowej)
-  --height WYSOKOŚĆ     Wysokość karty w milimetrach. Domyślnie: 88mm (rozmiar karty pokerowej)
+  -H WYSOKOŚĆ, --height WYSOKOŚĆ
+                        Wysokość karty w milimetrach. Domyślnie: 88mm (rozmiar karty pokerowej)
+  -f CZCIONKA, --font CZCIONKA
+                        Nazwa czcionki lub ścieżka do pliku .ttf. Domyślnie: Helvetica-Bold
 ```
 
 ## Przykłady
@@ -96,13 +110,23 @@ python card_generator.py -n "45-50" -o dodruk_45-50.pdf
 ### Przykład 3: Karty o niestandardowym rozmiarze
 Utwórz większe karty (80mm × 120mm):
 ```bash
-python card_generator.py -w 80 --height 120 -o duze_karty.pdf
+python card_generator.py -w 80 -H 120 -o duze_karty.pdf
 ```
 
 ### Przykład 4: Wiele zakresów
 Wygeneruj karty: 1-20, 50 i 80-90:
 ```bash
 python card_generator.py -n "1-20,50,80-90" -o wybrane_karty.pdf
+```
+
+### Przykład 5: Niestandardowa czcionka
+Użyj innej czcionki dla numerów:
+```bash
+# Wbudowana czcionka
+python card_generator.py -f "Times-Roman" -o karty_times.pdf
+
+# Plik z czcionką
+python card_generator.py -f "/sciezka/do/czcionki.ttf" -o karty_niestandardowe.pdf
 ```
 
 ## Instrukcje drukowania
