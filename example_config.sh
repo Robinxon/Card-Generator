@@ -39,12 +39,12 @@ python card_generator.py -N "1-20" -U -S 72 -O cards_underlined_large.pdf
 python card_generator.py -W 100 -H 150 -F "Courier-Bold" -S 96 -O jumbo_cards.pdf
 
 # Use custom font from file (.ttf or .otf format - replace with actual path)
-# python card_generator.py -F "/path/to/custom_font.ttf" -O cards_custom_font.pdf
-# python card_generator.py -F "/path/to/custom_font.otf" -O cards_custom_font.pdf
+python card_generator.py -F "/path/to/custom_font.ttf" -O cards_custom_font.pdf
+python card_generator.py -F "/path/to/custom_font.otf" -O cards_custom_font.pdf
 
 # Adjust vertical position for fonts with incorrect centering (e.g., Cute Notes)
-# python card_generator.py -F "Cute Notes.ttf" -V 10 -O cards_cute_notes.pdf
-# python card_generator.py -F "SomeFont.otf" -V -5 -O cards_adjusted.pdf
+python card_generator.py -F "Cute Notes.ttf" -V 10 -O cards_cute_notes.pdf
+python card_generator.py -F "SomeFont.otf" -V -5 -O cards_adjusted.pdf
 
 # Add decorative hand-drawn style frame around numbers
 python card_generator.py -D -O cards_with_decorative_frame.pdf
