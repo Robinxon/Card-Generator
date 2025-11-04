@@ -120,7 +120,9 @@ class CardGenerator:
         text = str(number)
         text_width = c.stringWidth(text, self.config.font_name, font_size)
         text_x = x + (self.config.width - text_width) / 2
-        text_y = y + (self.config.height - font_size) / 2
+        # Center text vertically by accounting for typical font ascent (~35% of font size)
+        # This places the visual center of the text at the card's center
+        text_y = y + (self.config.height / 2) - (font_size * 0.35)
         c.drawString(text_x, text_y, text)
         
         # Draw underline beneath the number
@@ -151,7 +153,9 @@ class CardGenerator:
         text = str(number)
         text_width = c.stringWidth(text, self.config.font_name, font_size)
         text_x = x + (self.config.width - text_width) / 2
-        text_y = y + (self.config.height - font_size) / 2
+        # Center text vertically by accounting for typical font ascent (~35% of font size)
+        # This places the visual center of the text at the card's center
+        text_y = y + (self.config.height / 2) - (font_size * 0.35)
         c.drawString(text_x, text_y, text)
         
         # Draw underline beneath the number
