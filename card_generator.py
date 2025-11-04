@@ -123,14 +123,23 @@ class CardGenerator:
         text_width = c.stringWidth(text, self.config.font_name, font_size)
         text_x = x + (self.config.width - text_width) / 2
         
-        # Center text vertically by accounting for typical font ascent (~35% of font size)
+        # Center text vertically using actual font metrics
+        # Get font metrics to calculate proper vertical centering
+        font = pdfmetrics.getFont(self.config.font_name)
+        ascent = font.face.ascent  # typically ~700-750 in font units
+        descent = font.face.descent  # typically ~-200 to -250 in font units
+        
+        # Calculate the visual center offset
+        # Font units are typically 1000 per em, so normalize to font_size
+        font_height = ascent - descent  # total height in font units
+        visual_center_offset = (ascent + descent) / 2.0 / font_height * font_size
+        
+        # Position text so its visual center aligns with card center
+        text_y = y + (self.config.height / 2) - visual_center_offset
+        
         # If underline is enabled, adjust slightly higher to center the text+underline combo
         if self.config.underline:
-            # With underline: position slightly higher to center the visual group
-            text_y = y + (self.config.height / 2) - (font_size * 0.35) + 2
-        else:
-            # Without underline: use standard centering
-            text_y = y + (self.config.height / 2) - (font_size * 0.35)
+            text_y += 2
         
         c.drawString(text_x, text_y, text)
         
@@ -164,14 +173,23 @@ class CardGenerator:
         text_width = c.stringWidth(text, self.config.font_name, font_size)
         text_x = x + (self.config.width - text_width) / 2
         
-        # Center text vertically by accounting for typical font ascent (~35% of font size)
+        # Center text vertically using actual font metrics
+        # Get font metrics to calculate proper vertical centering
+        font = pdfmetrics.getFont(self.config.font_name)
+        ascent = font.face.ascent  # typically ~700-750 in font units
+        descent = font.face.descent  # typically ~-200 to -250 in font units
+        
+        # Calculate the visual center offset
+        # Font units are typically 1000 per em, so normalize to font_size
+        font_height = ascent - descent  # total height in font units
+        visual_center_offset = (ascent + descent) / 2.0 / font_height * font_size
+        
+        # Position text so its visual center aligns with card center
+        text_y = y + (self.config.height / 2) - visual_center_offset
+        
         # If underline is enabled, adjust slightly higher to center the text+underline combo
         if self.config.underline:
-            # With underline: position slightly higher to center the visual group
-            text_y = y + (self.config.height / 2) - (font_size * 0.35) + 2
-        else:
-            # Without underline: use standard centering
-            text_y = y + (self.config.height / 2) - (font_size * 0.35)
+            text_y += 2
         
         c.drawString(text_x, text_y, text)
         
