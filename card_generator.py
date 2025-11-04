@@ -122,9 +122,16 @@ class CardGenerator:
         text = str(number)
         text_width = c.stringWidth(text, self.config.font_name, font_size)
         text_x = x + (self.config.width - text_width) / 2
+        
         # Center text vertically by accounting for typical font ascent (~35% of font size)
-        # This places the visual center of the text at the card's center
-        text_y = y + (self.config.height / 2) - (font_size * 0.35)
+        # If underline is enabled, adjust slightly higher to center the text+underline combo
+        if self.config.underline:
+            # With underline: position slightly higher to center the visual group
+            text_y = y + (self.config.height / 2) - (font_size * 0.35) + 2
+        else:
+            # Without underline: use standard centering
+            text_y = y + (self.config.height / 2) - (font_size * 0.35)
+        
         c.drawString(text_x, text_y, text)
         
         # Draw underline beneath the number (if enabled)
@@ -156,9 +163,16 @@ class CardGenerator:
         text = str(number)
         text_width = c.stringWidth(text, self.config.font_name, font_size)
         text_x = x + (self.config.width - text_width) / 2
+        
         # Center text vertically by accounting for typical font ascent (~35% of font size)
-        # This places the visual center of the text at the card's center
-        text_y = y + (self.config.height / 2) - (font_size * 0.35)
+        # If underline is enabled, adjust slightly higher to center the text+underline combo
+        if self.config.underline:
+            # With underline: position slightly higher to center the visual group
+            text_y = y + (self.config.height / 2) - (font_size * 0.35) + 2
+        else:
+            # Without underline: use standard centering
+            text_y = y + (self.config.height / 2) - (font_size * 0.35)
+        
         c.drawString(text_x, text_y, text)
         
         # Draw underline beneath the number (if enabled)

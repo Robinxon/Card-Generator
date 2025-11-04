@@ -208,3 +208,9 @@ __marimo__/
 
 # Generated PDF files
 *.pdf
+
+# Font files
+*.ttf
+*.otf
+*.TTF
+*.OTF
