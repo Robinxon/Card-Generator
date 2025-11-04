@@ -250,7 +250,8 @@ class CardGenerator:
             # Calculate frame size based on text width and font size
             frame_size = max(text_width * 1.4, font_size * 1.6)
             frame_center_x = x + self.config.width / 2
-            frame_center_y = y + self.config.height / 2 + self.config.vertical_offset
+            # Frame is always centered on card, regardless of vertical_offset
+            frame_center_y = y + self.config.height / 2
             self.draw_decorative_frame(c, frame_center_x, frame_center_y, frame_size)
         
         c.drawString(text_x, text_y, text)
@@ -311,7 +312,8 @@ class CardGenerator:
             # Calculate frame size based on text width and font size
             frame_size = max(text_width * 1.4, font_size * 1.6)
             frame_center_x = x + self.config.width / 2
-            frame_center_y = y + self.config.height / 2 + self.config.vertical_offset
+            # Frame is always centered on card, regardless of vertical_offset
+            frame_center_y = y + self.config.height / 2
             self.draw_decorative_frame(c, frame_center_x, frame_center_y, frame_size)
         
         c.drawString(text_x, text_y, text)
