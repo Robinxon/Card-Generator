@@ -95,10 +95,21 @@ python card_generator.py -U -O cards_underlined.pdf
 python card_generator.py -N "1-50" -S 60 -U -O cards.pdf
 ```
 
+### Vertical Adjustment
+
+For fonts that don't center properly automatically, you can manually adjust the vertical position:
+```bash
+# Move numbers up by 10 points (positive = up, negative = down)
+python card_generator.py -F "Cute Notes.ttf" -V 10 -O cards.pdf
+
+# Move numbers down by 5 points
+python card_generator.py -F "SomeFont.otf" -V -5 -O cards.pdf
+```
+
 ### All Options
 
 ```
-usage: card_generator.py [-h] [-N NUMBERS] [-O OUTPUT] [-W WIDTH] [-H HEIGHT] [-F FONT] [-S FONT_SIZE] [-U]
+usage: card_generator.py [-h] [-N NUMBERS] [-O OUTPUT] [-W WIDTH] [-H HEIGHT] [-F FONT] [-S FONT_SIZE] [-U] [-V VERTICAL_OFFSET]
 
 Generate PDF file with numbered cards for printing
 
@@ -117,6 +128,9 @@ optional arguments:
   -S FONT_SIZE, --font-size FONT_SIZE
                         Font size in points. If not specified, auto-calculated based on card size
   -U, --underline       Add underline beneath numbers. Default: no underline
+  -V VERTICAL_OFFSET, --vertical-offset VERTICAL_OFFSET
+                        Manual vertical adjustment in points (positive = move up, negative = move down).
+                        Use this if font appears off-center. Default: 0
 ```
 
 ## Examples

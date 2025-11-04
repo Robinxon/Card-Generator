@@ -95,10 +95,21 @@ python card_generator.py -U -O karty_podkreslone.pdf
 python card_generator.py -N "1-50" -S 60 -U -O karty.pdf
 ```
 
+### Dostosowanie położenia pionowego
+
+Dla czcionek, które nie są automatycznie dobrze wyśrodkowane, możesz ręcznie dostosować położenie pionowe:
+```bash
+# Przesuń numery w górę o 10 punktów (wartość dodatnia = w górę, ujemna = w dół)
+python card_generator.py -F "Cute Notes.ttf" -V 10 -O karty.pdf
+
+# Przesuń numery w dół o 5 punktów
+python card_generator.py -F "JakasCzcionka.otf" -V -5 -O karty.pdf
+```
+
 ### Wszystkie opcje
 
 ```
-użycie: card_generator.py [-h] [-N NUMERY] [-O PLIK_WYJŚCIOWY] [-W SZEROKOŚĆ] [-H WYSOKOŚĆ] [-F CZCIONKA] [-S ROZMIAR_CZCIONKI] [-U]
+użycie: card_generator.py [-h] [-N NUMERY] [-O PLIK_WYJŚCIOWY] [-W SZEROKOŚĆ] [-H WYSOKOŚĆ] [-F CZCIONKA] [-S ROZMIAR_CZCIONKI] [-U] [-V PRZESUNIĘCIE_PIONOWE]
 
 Generuj plik PDF z ponumerowanymi kartami do druku
 
@@ -118,6 +129,9 @@ opcje:
   -S ROZMIAR_CZCIONKI, --font-size ROZMIAR_CZCIONKI
                         Rozmiar czcionki w punktach. Jeśli nie podano, obliczany automatycznie
   -U, --underline       Dodaj podkreślenie pod numerami. Domyślnie: bez podkreślenia
+  -V PRZESUNIĘCIE_PIONOWE, --vertical-offset PRZESUNIĘCIE_PIONOWE
+                        Ręczne dostosowanie pionowe w punktach (wartość dodatnia = w górę, ujemna = w dół).
+                        Użyj tego, jeśli czcionka wyświetla się nie na środku. Domyślnie: 0
 ```
 
 ## Przykłady

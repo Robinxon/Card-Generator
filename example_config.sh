@@ -42,3 +42,7 @@ python card_generator.py -W 100 -H 150 -F "Courier-Bold" -S 96 -O jumbo_cards.pd
 # python card_generator.py -F "/path/to/custom_font.ttf" -O cards_custom_font.pdf
 # python card_generator.py -F "/path/to/custom_font.otf" -O cards_custom_font.pdf
 
+# Adjust vertical position for fonts with incorrect centering (e.g., Cute Notes)
+# python card_generator.py -F "Cute Notes.ttf" -V 10 -O cards_cute_notes.pdf
+# python card_generator.py -F "SomeFont.otf" -V -5 -O cards_adjusted.pdf
+

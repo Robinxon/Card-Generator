@@ -19,7 +19,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 
 class CardConfig:
     """Configuration for card generation"""
-    def __init__(self, width_mm: float = 63, height_mm: float = 88, font: str = 'Helvetica-Bold', font_size: float = None, underline: bool = False):
+    def __init__(self, width_mm: float = 63, height_mm: float = 88, font: str = 'Helvetica-Bold', font_size: float = None, underline: bool = False, vertical_offset: float = 0):
         """
         Initialize card configuration
         
@@ -29,6 +29,7 @@ class CardConfig:
             font: Font name or path to .ttf/.otf file (default: Helvetica-Bold)
             font_size: Font size in points (default: None, auto-calculated)
             underline: Whether to underline numbers (default: False)
+            vertical_offset: Manual vertical adjustment in points (positive = move up, negative = move down)
         """
         self.width = width_mm * mm
         self.height = height_mm * mm
@@ -37,6 +38,7 @@ class CardConfig:
         self.font_name = None  # Will be set when registering custom fonts
         self.font_size = font_size  # Custom font size in points (None = auto-calculate)
         self.underline = underline  # Whether to underline numbers
+        self.vertical_offset = vertical_offset  # Manual vertical adjustment
 
 
 class CardGenerator:
@@ -141,6 +143,9 @@ class CardGenerator:
         if self.config.underline:
             text_y += 2
         
+        # Apply manual vertical offset if specified
+        text_y += self.config.vertical_offset
+        
         c.drawString(text_x, text_y, text)
         
         # Draw underline beneath the number (if enabled)
@@ -190,6 +195,9 @@ class CardGenerator:
         # If underline is enabled, adjust slightly higher to center the text+underline combo
         if self.config.underline:
             text_y += 2
+        
+        # Apply manual vertical offset if specified
+        text_y += self.config.vertical_offset
         
         c.drawString(text_x, text_y, text)
         
@@ -313,6 +321,9 @@ Examples:
   # Add underline to numbers
   python card_generator.py -U -O cards_underlined.pdf
   
+  # Adjust vertical position for fonts with incorrect metrics (e.g., move up 10 points)
+  python card_generator.py -F "Cute Notes.ttf" -V 10 -O cards.pdf
+  
   # Combine all options
   python card_generator.py -N "1-20" -W 80 -H 120 -F "Courier-Bold" -S 60 -U -O cards.pdf
         """
@@ -366,6 +377,13 @@ Examples:
         help='Add underline beneath numbers. Default: no underline'
     )
     
+    parser.add_argument(
+        '-V', '--vertical-offset',
+        type=float,
+        default=0,
+        help='Manual vertical adjustment in points (positive = move up, negative = move down). Use this if font appears off-center. Default: 0'
+    )
+    
     args = parser.parse_args()
     
     # Parse numbers
@@ -380,7 +398,7 @@ Examples:
         return 1
     
     # Create configuration
-    config = CardConfig(width_mm=args.width, height_mm=args.height, font=args.font, font_size=args.font_size, underline=args.underline)
+    config = CardConfig(width_mm=args.width, height_mm=args.height, font=args.font, font_size=args.font_size, underline=args.underline, vertical_offset=args.vertical_offset)
     print(f"Card dimensions: {args.width}mm x {args.height}mm")
     if args.font != 'Helvetica-Bold':
         print(f"Using font: {args.font}")
@@ -388,6 +406,8 @@ Examples:
         print(f"Using font size: {args.font_size} points")
     if args.underline:
         print("Underline enabled")
+    if args.vertical_offset != 0:
+        print(f"Vertical offset: {args.vertical_offset:+.1f} points")
     
     # Generate PDF
     generator = CardGenerator(config)
