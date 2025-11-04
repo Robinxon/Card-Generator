@@ -53,3 +53,5 @@ python card_generator.py -F "Times-Bold" -S 48 -D -O cards_times_framed.pdf
 # Combine all features
 python card_generator.py -N "1-30" -W 80 -H 120 -F "Courier-Bold" -S 72 -U -D -V 5 -O cards_all_features.pdf
 
+# Defaults for karaoke cards
+python card_generator.py -W 45 -H 45 -N "1-99" -O ultrastar_numerki.pdf -D -V -4
