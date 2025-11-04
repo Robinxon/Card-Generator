@@ -68,8 +68,9 @@ Use a different font (built-in or custom):
 # Use a built-in font
 python card_generator.py -F "Times-Bold" -O cards.pdf
 
-# Use a custom font file
+# Use a custom font file (.ttf or .otf)
 python card_generator.py -F "/path/to/myfont.ttf" -O cards.pdf
+python card_generator.py -F "/path/to/myfont.otf" -O cards.pdf
 ```
 
 ### Custom Font Size
@@ -101,7 +102,7 @@ optional arguments:
                         Card width in millimeters. Default: 63mm (poker card size)
   -H HEIGHT, --height HEIGHT
                         Card height in millimeters. Default: 88mm (poker card size)
-  -F FONT, --font FONT  Font name or path to font file (.ttf). Default: Helvetica-Bold
+  -F FONT, --font FONT  Font name or path to font file (.ttf/.otf). Default: Helvetica-Bold
   -S FONT_SIZE, --font-size FONT_SIZE
                         Font size in points. If not specified, auto-calculated based on card size
 ```
@@ -137,8 +138,9 @@ Use a different font for the numbers:
 # Built-in font
 python card_generator.py -F "Times-Roman" -O cards_times.pdf
 
-# Custom font file
+# Custom font file (.ttf or .otf)
 python card_generator.py -F "/path/to/custom_font.ttf" -O cards_custom.pdf
+python card_generator.py -F "/path/to/custom_font.otf" -O cards_custom.pdf
 ```
 
 ### Example 6: Custom font size

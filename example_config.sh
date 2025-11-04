@@ -34,6 +34,7 @@ python card_generator.py -S 36 -O cards_small_numbers.pdf
 # Combine options: large cards with large font
 python card_generator.py -W 100 -H 150 -F "Courier-Bold" -S 96 -O jumbo_cards.pdf
 
-# Use custom font from file (replace with actual path)
+# Use custom font from file (.ttf or .otf format - replace with actual path)
 # python card_generator.py -F "/path/to/custom_font.ttf" -O cards_custom_font.pdf
+# python card_generator.py -F "/path/to/custom_font.otf" -O cards_custom_font.pdf
 

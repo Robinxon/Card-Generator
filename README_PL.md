@@ -68,8 +68,9 @@ Użyj innej czcionki (wbudowanej lub niestandardowej):
 # Użyj wbudowanej czcionki
 python card_generator.py -F "Times-Bold" -O karty.pdf
 
-# Użyj pliku z czcionką
+# Użyj pliku z czcionką (.ttf lub .otf)
 python card_generator.py -F "/sciezka/do/czcionki.ttf" -O karty.pdf
+python card_generator.py -F "/sciezka/do/czcionki.otf" -O karty.pdf
 ```
 
 ### Niestandardowy rozmiar czcionki
@@ -102,7 +103,7 @@ opcje:
   -H WYSOKOŚĆ, --height WYSOKOŚĆ
                         Wysokość karty w milimetrach. Domyślnie: 88mm (rozmiar karty pokerowej)
   -F CZCIONKA, --font CZCIONKA
-                        Nazwa czcionki lub ścieżka do pliku .ttf. Domyślnie: Helvetica-Bold
+                        Nazwa czcionki lub ścieżka do pliku .ttf/.otf. Domyślnie: Helvetica-Bold
   -S ROZMIAR_CZCIONKI, --font-size ROZMIAR_CZCIONKI
                         Rozmiar czcionki w punktach. Jeśli nie podano, obliczany automatycznie
 ```
@@ -138,8 +139,9 @@ Użyj innej czcionki dla numerów:
 # Wbudowana czcionka
 python card_generator.py -F "Times-Roman" -O karty_times.pdf
 
-# Plik z czcionką
+# Plik z czcionką (.ttf lub .otf)
 python card_generator.py -F "/sciezka/do/czcionki.ttf" -O karty_niestandardowe.pdf
+python card_generator.py -F "/sciezka/do/czcionki.otf" -O karty_niestandardowe.pdf
 ```
 
 ### Przykład 6: Niestandardowy rozmiar czcionki

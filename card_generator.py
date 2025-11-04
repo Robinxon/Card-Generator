@@ -26,7 +26,7 @@ class CardConfig:
         Args:
             width_mm: Card width in millimeters (default: 63mm, standard poker card)
             height_mm: Card height in millimeters (default: 88mm, standard poker card)
-            font: Font name or path to .ttf file (default: Helvetica-Bold)
+            font: Font name or path to .ttf/.otf file (default: Helvetica-Bold)
             font_size: Font size in points (default: None, auto-calculated)
         """
         self.width = width_mm * mm
@@ -55,8 +55,8 @@ class CardGenerator:
         """Register custom font if provided as a file path"""
         font = self.config.font
         
-        # Check if font is a file path
-        if font.endswith('.ttf') or font.endswith('.TTF'):
+        # Check if font is a file path (.ttf or .otf)
+        if font.endswith(('.ttf', '.TTF', '.otf', '.OTF')):
             if os.path.exists(font):
                 # Extract font name from file path
                 font_basename = os.path.basename(font)
@@ -266,8 +266,9 @@ Examples:
   # Use custom font from system
   python card_generator.py -F "Times-Bold" -O cards.pdf
   
-  # Use custom font from file with custom size
+  # Use custom font from file (.ttf or .otf) with custom size
   python card_generator.py -F "/path/to/font.ttf" -S 48 -O cards.pdf
+  python card_generator.py -F "/path/to/font.otf" -S 48 -O cards.pdf
   
   # Combine all options
   python card_generator.py -N "1-20" -W 80 -H 120 -F "Courier-Bold" -S 60 -O cards.pdf
@@ -306,7 +307,7 @@ Examples:
         '-F', '--font',
         type=str,
         default='Helvetica-Bold',
-        help='Font name or path to font file (.ttf). Default: Helvetica-Bold'
+        help='Font name or path to font file (.ttf/.otf). Default: Helvetica-Bold'
     )
     
     parser.add_argument(
