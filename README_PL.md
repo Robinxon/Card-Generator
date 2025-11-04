@@ -106,10 +106,21 @@ python card_generator.py -F "Cute Notes.ttf" -V 10 -O karty.pdf
 python card_generator.py -F "JakasCzcionka.otf" -V -5 -O karty.pdf
 ```
 
+### Ozdobna ramka
+
+Dodaj ręcznie rysowaną ozdobną ramkę wokół numerów (działa z każdą czcionką):
+```bash
+# Wygeneruj karty z ozdobną ramką
+python card_generator.py -D -O karty_z_ramka.pdf
+
+# Połącz z niestandardową czcionką i innymi opcjami
+python card_generator.py -F "Times-Bold" -S 48 -D -O karty.pdf
+```
+
 ### Wszystkie opcje
 
 ```
-użycie: card_generator.py [-h] [-N NUMERY] [-O PLIK_WYJŚCIOWY] [-W SZEROKOŚĆ] [-H WYSOKOŚĆ] [-F CZCIONKA] [-S ROZMIAR_CZCIONKI] [-U] [-V PRZESUNIĘCIE_PIONOWE]
+użycie: card_generator.py [-h] [-N NUMERY] [-O PLIK_WYJŚCIOWY] [-W SZEROKOŚĆ] [-H WYSOKOŚĆ] [-F CZCIONKA] [-S ROZMIAR_CZCIONKI] [-U] [-V PRZESUNIĘCIE_PIONOWE] [-D]
 
 Generuj plik PDF z ponumerowanymi kartami do druku
 
@@ -132,6 +143,8 @@ opcje:
   -V PRZESUNIĘCIE_PIONOWE, --vertical-offset PRZESUNIĘCIE_PIONOWE
                         Ręczne dostosowanie pionowe w punktach (wartość dodatnia = w górę, ujemna = w dół).
                         Użyj tego, jeśli czcionka wyświetla się nie na środku. Domyślnie: 0
+  -D, --decorative-frame
+                        Dodaj ozdobną ręcznie rysowaną ramkę wokół numerów. Domyślnie: bez ramki
 ```
 
 ## Przykłady

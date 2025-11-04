@@ -19,7 +19,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 
 class CardConfig:
     """Configuration for card generation"""
-    def __init__(self, width_mm: float = 63, height_mm: float = 88, font: str = 'Helvetica-Bold', font_size: float = None, underline: bool = False, vertical_offset: float = 0):
+    def __init__(self, width_mm: float = 63, height_mm: float = 88, font: str = 'Helvetica-Bold', font_size: float = None, underline: bool = False, vertical_offset: float = 0, decorative_frame: bool = False):
         """
         Initialize card configuration
         
@@ -30,6 +30,7 @@ class CardConfig:
             font_size: Font size in points (default: None, auto-calculated)
             underline: Whether to underline numbers (default: False)
             vertical_offset: Manual vertical adjustment in points (positive = move up, negative = move down)
+            decorative_frame: Whether to draw a hand-drawn style frame around numbers (default: False)
         """
         self.width = width_mm * mm
         self.height = height_mm * mm
@@ -39,6 +40,7 @@ class CardConfig:
         self.font_size = font_size  # Custom font size in points (None = auto-calculate)
         self.underline = underline  # Whether to underline numbers
         self.vertical_offset = vertical_offset  # Manual vertical adjustment
+        self.decorative_frame = decorative_frame  # Whether to draw hand-drawn frame
 
 
 class CardGenerator:
@@ -96,6 +98,103 @@ class CardGenerator:
         cards_per_column = int((self.page_height - margin) / (self.config.height + margin))
         return cards_per_row, cards_per_column
     
+    def draw_decorative_frame(self, c: canvas.Canvas, center_x: float, center_y: float, frame_size: float):
+        """
+        Draw a hand-drawn style decorative frame around the number
+        
+        Args:
+            c: ReportLab canvas object
+            center_x: X coordinate for frame center
+            center_y: Y coordinate for frame center
+            frame_size: Size of the frame (width and height)
+        """
+        import math
+        import random
+        
+        # Set random seed based on position for consistent "hand-drawn" look per card
+        random.seed(int(center_x * 1000 + center_y * 1000))
+        
+        # Frame parameters
+        half_size = frame_size / 2
+        corner_radius = frame_size * 0.15  # Rounded corners
+        wobble = frame_size * 0.02  # Amount of irregularity
+        
+        c.setStrokeColorRGB(0, 0, 0)
+        c.setLineWidth(2.5)
+        c.setLineCap(1)  # Round line caps
+        c.setLineJoin(1)  # Round line joins
+        
+        # Create path with slight irregularities to simulate hand-drawn effect
+        path = c.beginPath()
+        
+        # Number of segments per side for the wobbly effect
+        segments = 8
+        
+        # Top side (right to left)
+        for i in range(segments + 1):
+            t = i / segments
+            x = center_x + half_size - t * (frame_size)
+            y = center_y + half_size + random.uniform(-wobble, wobble)
+            
+            # Add rounded corner effect at ends
+            if i == 0:
+                x -= corner_radius
+            elif i == segments:
+                x += corner_radius
+            
+            if i == 0:
+                path.moveTo(x, y)
+            else:
+                path.lineTo(x, y)
+        
+        # Left side (top to bottom)
+        for i in range(segments + 1):
+            t = i / segments
+            x = center_x - half_size + random.uniform(-wobble, wobble)
+            y = center_y + half_size - t * (frame_size)
+            
+            # Add rounded corner effect at ends
+            if i == 0:
+                y -= corner_radius
+            elif i == segments:
+                y += corner_radius
+            
+            path.lineTo(x, y)
+        
+        # Bottom side (left to right)
+        for i in range(segments + 1):
+            t = i / segments
+            x = center_x - half_size + t * (frame_size)
+            y = center_y - half_size + random.uniform(-wobble, wobble)
+            
+            # Add rounded corner effect at ends
+            if i == 0:
+                x += corner_radius
+            elif i == segments:
+                x -= corner_radius
+            
+            path.lineTo(x, y)
+        
+        # Right side (bottom to top)
+        for i in range(segments + 1):
+            t = i / segments
+            x = center_x + half_size + random.uniform(-wobble, wobble)
+            y = center_y - half_size + t * (frame_size)
+            
+            # Add rounded corner effect at ends
+            if i == 0:
+                y += corner_radius
+            elif i == segments:
+                y -= corner_radius
+            
+            path.lineTo(x, y)
+        
+        path.close()
+        c.drawPath(path, stroke=1, fill=0)
+        
+        # Reset random seed
+        random.seed()
+    
     def draw_card_front(self, c: canvas.Canvas, x: float, y: float, number: int):
         """
         Draw the front side of a card (with number and border)
@@ -145,6 +244,14 @@ class CardGenerator:
         
         # Apply manual vertical offset if specified
         text_y += self.config.vertical_offset
+        
+        # Draw decorative frame around the number if enabled
+        if self.config.decorative_frame:
+            # Calculate frame size based on text width and font size
+            frame_size = max(text_width * 1.4, font_size * 1.6)
+            frame_center_x = x + self.config.width / 2
+            frame_center_y = y + self.config.height / 2 + self.config.vertical_offset
+            self.draw_decorative_frame(c, frame_center_x, frame_center_y, frame_size)
         
         c.drawString(text_x, text_y, text)
         
@@ -198,6 +305,14 @@ class CardGenerator:
         
         # Apply manual vertical offset if specified
         text_y += self.config.vertical_offset
+        
+        # Draw decorative frame around the number if enabled
+        if self.config.decorative_frame:
+            # Calculate frame size based on text width and font size
+            frame_size = max(text_width * 1.4, font_size * 1.6)
+            frame_center_x = x + self.config.width / 2
+            frame_center_y = y + self.config.height / 2 + self.config.vertical_offset
+            self.draw_decorative_frame(c, frame_center_x, frame_center_y, frame_size)
         
         c.drawString(text_x, text_y, text)
         
@@ -324,8 +439,11 @@ Examples:
   # Adjust vertical position for fonts with incorrect metrics (e.g., move up 10 points)
   python card_generator.py -F "Cute Notes.ttf" -V 10 -O cards.pdf
   
+  # Add decorative hand-drawn style frame around numbers
+  python card_generator.py -D -O cards_with_frame.pdf
+  
   # Combine all options
-  python card_generator.py -N "1-20" -W 80 -H 120 -F "Courier-Bold" -S 60 -U -O cards.pdf
+  python card_generator.py -N "1-20" -W 80 -H 120 -F "Courier-Bold" -S 60 -U -D -O cards.pdf
         """
     )
     
@@ -384,6 +502,12 @@ Examples:
         help='Manual vertical adjustment in points (positive = move up, negative = move down). Use this if font appears off-center. Default: 0'
     )
     
+    parser.add_argument(
+        '-D', '--decorative-frame',
+        action='store_true',
+        help='Add decorative hand-drawn style frame around numbers. Default: no frame'
+    )
+    
     args = parser.parse_args()
     
     # Parse numbers
@@ -398,7 +522,7 @@ Examples:
         return 1
     
     # Create configuration
-    config = CardConfig(width_mm=args.width, height_mm=args.height, font=args.font, font_size=args.font_size, underline=args.underline, vertical_offset=args.vertical_offset)
+    config = CardConfig(width_mm=args.width, height_mm=args.height, font=args.font, font_size=args.font_size, underline=args.underline, vertical_offset=args.vertical_offset, decorative_frame=args.decorative_frame)
     print(f"Card dimensions: {args.width}mm x {args.height}mm")
     if args.font != 'Helvetica-Bold':
         print(f"Using font: {args.font}")
@@ -408,6 +532,8 @@ Examples:
         print("Underline enabled")
     if args.vertical_offset != 0:
         print(f"Vertical offset: {args.vertical_offset:+.1f} points")
+    if args.decorative_frame:
+        print("Decorative frame enabled")
     
     # Generate PDF
     generator = CardGenerator(config)

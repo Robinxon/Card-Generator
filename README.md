@@ -106,10 +106,21 @@ python card_generator.py -F "Cute Notes.ttf" -V 10 -O cards.pdf
 python card_generator.py -F "SomeFont.otf" -V -5 -O cards.pdf
 ```
 
+### Decorative Frame
+
+Add a hand-drawn style frame around numbers (works with any font):
+```bash
+# Generate cards with decorative frames
+python card_generator.py -D -O cards_with_frame.pdf
+
+# Combine with custom font and other options
+python card_generator.py -F "Times-Bold" -S 48 -D -O cards.pdf
+```
+
 ### All Options
 
 ```
-usage: card_generator.py [-h] [-N NUMBERS] [-O OUTPUT] [-W WIDTH] [-H HEIGHT] [-F FONT] [-S FONT_SIZE] [-U] [-V VERTICAL_OFFSET]
+usage: card_generator.py [-h] [-N NUMBERS] [-O OUTPUT] [-W WIDTH] [-H HEIGHT] [-F FONT] [-S FONT_SIZE] [-U] [-V VERTICAL_OFFSET] [-D]
 
 Generate PDF file with numbered cards for printing
 
@@ -131,6 +142,8 @@ optional arguments:
   -V VERTICAL_OFFSET, --vertical-offset VERTICAL_OFFSET
                         Manual vertical adjustment in points (positive = move up, negative = move down).
                         Use this if font appears off-center. Default: 0
+  -D, --decorative-frame
+                        Add decorative hand-drawn style frame around numbers. Default: no frame
 ```
 
 ## Examples

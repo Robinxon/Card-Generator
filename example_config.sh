@@ -46,3 +46,10 @@ python card_generator.py -W 100 -H 150 -F "Courier-Bold" -S 96 -O jumbo_cards.pd
 # python card_generator.py -F "Cute Notes.ttf" -V 10 -O cards_cute_notes.pdf
 # python card_generator.py -F "SomeFont.otf" -V -5 -O cards_adjusted.pdf
 
+# Add decorative hand-drawn style frame around numbers
+python card_generator.py -D -O cards_with_decorative_frame.pdf
+python card_generator.py -F "Times-Bold" -S 48 -D -O cards_times_framed.pdf
+
+# Combine all features
+python card_generator.py -N "1-30" -W 80 -H 120 -F "Courier-Bold" -S 72 -U -D -V 5 -O cards_all_features.pdf
+
