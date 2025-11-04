@@ -84,10 +84,21 @@ python card_generator.py -S 60 -O cards.pdf
 python card_generator.py -W 80 -H 120 -F "Courier-Bold" -S 72 -O large_cards.pdf
 ```
 
+### Optional Underline
+
+Add underline beneath numbers (disabled by default):
+```bash
+# Generate cards with underlined numbers
+python card_generator.py -U -O cards_underlined.pdf
+
+# Combine with other options
+python card_generator.py -N "1-50" -S 60 -U -O cards.pdf
+```
+
 ### All Options
 
 ```
-usage: card_generator.py [-h] [-N NUMBERS] [-O OUTPUT] [-W WIDTH] [-H HEIGHT] [-F FONT] [-S FONT_SIZE]
+usage: card_generator.py [-h] [-N NUMBERS] [-O OUTPUT] [-W WIDTH] [-H HEIGHT] [-F FONT] [-S FONT_SIZE] [-U]
 
 Generate PDF file with numbered cards for printing
 
@@ -105,6 +116,7 @@ optional arguments:
   -F FONT, --font FONT  Font name or path to font file (.ttf/.otf). Default: Helvetica-Bold
   -S FONT_SIZE, --font-size FONT_SIZE
                         Font size in points. If not specified, auto-calculated based on card size
+  -U, --underline       Add underline beneath numbers. Default: no underline
 ```
 
 ## Examples

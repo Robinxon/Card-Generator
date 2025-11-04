@@ -3,8 +3,8 @@
 Card Generator - Generate PDF files with numbered cards for printing
 
 This script generates a PDF file containing double-sided cards with numbers.
-Both sides display the number with underline. The front side has a black border
-for cutting guidance.
+Both sides display the number. The front side has a black border for cutting
+guidance. Optionally, numbers can have an underline.
 """
 
 import argparse
@@ -19,7 +19,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 
 class CardConfig:
     """Configuration for card generation"""
-    def __init__(self, width_mm: float = 63, height_mm: float = 88, font: str = 'Helvetica-Bold', font_size: float = None):
+    def __init__(self, width_mm: float = 63, height_mm: float = 88, font: str = 'Helvetica-Bold', font_size: float = None, underline: bool = False):
         """
         Initialize card configuration
         
@@ -28,6 +28,7 @@ class CardConfig:
             height_mm: Card height in millimeters (default: 88mm, standard poker card)
             font: Font name or path to .ttf/.otf file (default: Helvetica-Bold)
             font_size: Font size in points (default: None, auto-calculated)
+            underline: Whether to underline numbers (default: False)
         """
         self.width = width_mm * mm
         self.height = height_mm * mm
@@ -35,6 +36,7 @@ class CardConfig:
         self.font = font
         self.font_name = None  # Will be set when registering custom fonts
         self.font_size = font_size  # Custom font size in points (None = auto-calculate)
+        self.underline = underline  # Whether to underline numbers
 
 
 class CardGenerator:
@@ -107,7 +109,7 @@ class CardGenerator:
         c.setLineWidth(self.config.border_width)
         c.rect(x, y, self.config.width, self.config.height, stroke=1, fill=0)
         
-        # Draw number in the center with underline
+        # Draw number in the center
         c.setFillColorRGB(0, 0, 0)  # Black
         # Use custom font size if provided, otherwise auto-calculate
         if self.config.font_size is not None:
@@ -125,10 +127,11 @@ class CardGenerator:
         text_y = y + (self.config.height / 2) - (font_size * 0.35)
         c.drawString(text_x, text_y, text)
         
-        # Draw underline beneath the number
-        underline_y = text_y - 3  # 3 points below text baseline
-        c.setLineWidth(1.5)
-        c.line(text_x, underline_y, text_x + text_width, underline_y)
+        # Draw underline beneath the number (if enabled)
+        if self.config.underline:
+            underline_y = text_y - 3  # 3 points below text baseline
+            c.setLineWidth(1.5)
+            c.line(text_x, underline_y, text_x + text_width, underline_y)
     
     def draw_card_back(self, c: canvas.Canvas, x: float, y: float, number: int):
         """
@@ -140,7 +143,7 @@ class CardGenerator:
             y: Y coordinate for card bottom-left corner
             number: Number to display on card
         """
-        # Draw number in the center with underline (no border)
+        # Draw number in the center (no border)
         c.setFillColorRGB(0, 0, 0)  # Black
         # Use custom font size if provided, otherwise auto-calculate
         if self.config.font_size is not None:
@@ -158,10 +161,11 @@ class CardGenerator:
         text_y = y + (self.config.height / 2) - (font_size * 0.35)
         c.drawString(text_x, text_y, text)
         
-        # Draw underline beneath the number
-        underline_y = text_y - 3  # 3 points below text baseline
-        c.setLineWidth(1.5)
-        c.line(text_x, underline_y, text_x + text_width, underline_y)
+        # Draw underline beneath the number (if enabled)
+        if self.config.underline:
+            underline_y = text_y - 3  # 3 points below text baseline
+            c.setLineWidth(1.5)
+            c.line(text_x, underline_y, text_x + text_width, underline_y)
     
     def generate_pdf(self, numbers: List[int], output_file: str):
         """
@@ -274,8 +278,11 @@ Examples:
   python card_generator.py -F "/path/to/font.ttf" -S 48 -O cards.pdf
   python card_generator.py -F "/path/to/font.otf" -S 48 -O cards.pdf
   
+  # Add underline to numbers
+  python card_generator.py -U -O cards_underlined.pdf
+  
   # Combine all options
-  python card_generator.py -N "1-20" -W 80 -H 120 -F "Courier-Bold" -S 60 -O cards.pdf
+  python card_generator.py -N "1-20" -W 80 -H 120 -F "Courier-Bold" -S 60 -U -O cards.pdf
         """
     )
     
@@ -321,6 +328,12 @@ Examples:
         help='Font size in points. If not specified, auto-calculated based on card size'
     )
     
+    parser.add_argument(
+        '-U', '--underline',
+        action='store_true',
+        help='Add underline beneath numbers. Default: no underline'
+    )
+    
     args = parser.parse_args()
     
     # Parse numbers
@@ -335,12 +348,14 @@ Examples:
         return 1
     
     # Create configuration
-    config = CardConfig(width_mm=args.width, height_mm=args.height, font=args.font, font_size=args.font_size)
+    config = CardConfig(width_mm=args.width, height_mm=args.height, font=args.font, font_size=args.font_size, underline=args.underline)
     print(f"Card dimensions: {args.width}mm x {args.height}mm")
     if args.font != 'Helvetica-Bold':
         print(f"Using font: {args.font}")
     if args.font_size is not None:
         print(f"Using font size: {args.font_size} points")
+    if args.underline:
+        print("Underline enabled")
     
     # Generate PDF
     generator = CardGenerator(config)

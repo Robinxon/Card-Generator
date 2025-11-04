@@ -31,6 +31,10 @@ python card_generator.py -F "Courier-Bold" -O cards_courier.pdf
 python card_generator.py -S 60 -O cards_large_numbers.pdf
 python card_generator.py -S 36 -O cards_small_numbers.pdf
 
+# Add underline to numbers
+python card_generator.py -U -O cards_underlined.pdf
+python card_generator.py -N "1-20" -U -S 72 -O cards_underlined_large.pdf
+
 # Combine options: large cards with large font
 python card_generator.py -W 100 -H 150 -F "Courier-Bold" -S 96 -O jumbo_cards.pdf
 

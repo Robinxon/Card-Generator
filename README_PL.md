@@ -84,10 +84,21 @@ python card_generator.py -S 60 -O karty.pdf
 python card_generator.py -W 80 -H 120 -F "Courier-Bold" -S 72 -O duze_karty.pdf
 ```
 
+### Opcjonalne podkreślenie
+
+Dodaj podkreślenie pod numerami (domyślnie wyłączone):
+```bash
+# Wygeneruj karty z podkreślonymi numerami
+python card_generator.py -U -O karty_podkreslone.pdf
+
+# Połącz z innymi opcjami
+python card_generator.py -N "1-50" -S 60 -U -O karty.pdf
+```
+
 ### Wszystkie opcje
 
 ```
-użycie: card_generator.py [-h] [-N NUMERY] [-O PLIK_WYJŚCIOWY] [-W SZEROKOŚĆ] [-H WYSOKOŚĆ] [-F CZCIONKA] [-S ROZMIAR_CZCIONKI]
+użycie: card_generator.py [-h] [-N NUMERY] [-O PLIK_WYJŚCIOWY] [-W SZEROKOŚĆ] [-H WYSOKOŚĆ] [-F CZCIONKA] [-S ROZMIAR_CZCIONKI] [-U]
 
 Generuj plik PDF z ponumerowanymi kartami do druku
 
@@ -106,6 +117,7 @@ opcje:
                         Nazwa czcionki lub ścieżka do pliku .ttf/.otf. Domyślnie: Helvetica-Bold
   -S ROZMIAR_CZCIONKI, --font-size ROZMIAR_CZCIONKI
                         Rozmiar czcionki w punktach. Jeśli nie podano, obliczany automatycznie
+  -U, --underline       Dodaj podkreślenie pod numerami. Domyślnie: bez podkreślenia
 ```
 
 ## Przykłady
